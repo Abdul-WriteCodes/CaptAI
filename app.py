@@ -7,12 +7,11 @@ Created on Thu May  1 01:36:28 2025
 import re
 import streamlit as st
 from sklearn.linear_model import LogisticRegression, SGDClassifier
-import joblib
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
-from utils.utils import clean_text
 
 import uuid
 import requests
@@ -42,9 +41,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+from utils.utils import clean_text
+import joblib
 
 # Load models and vectorizer
-almirax_model = joblib.load('Alm_model.pkl')
+almirax_model = joblib.load('Alx_model.pkl')
 alekxia = joblib.load('Alx_model.pkl')
 vectorizer = joblib.load('text_vectorizer.pkl')
 
