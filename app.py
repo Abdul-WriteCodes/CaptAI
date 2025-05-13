@@ -40,28 +40,26 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Optimised performance: Caching of models and vectorizer to avoid reloading on every app rerun
-@st.cache_resource
-def load_models_and_vectorizer():
-    almirax_model = joblib.load('sentiLGR_model.pkl')
-    alekxia_model = joblib.load('sentiSGD_model.pkl')
-    vectorizer = joblib.load('tfidf_vectorizer.pkl')
-    return {
-        'Almirax': almirax_model,
-        'Alekxia': alekxia_model
-    }, vectorizer  # Just this — a tuple of (models_dict, vectorizer)
 
-# Load models and vectorizer BEFORE using them in the sidebar
-models, vectorizer = load_models_and_vectorizer()
+# Load models and vectorizer
+almirax_model = joblib.load('sentiLGR_model.pkl')
+alekxia = joblib.load('sentiSGD_model.pkl')
+vectorizer = joblib.load('tfidf_vectorizer.pkl')
+
+models = {
+    'Almirax': almirax_model,
+    'Alekxia': alekxia
+}
+
 
 # Sidebar
 with st.sidebar:
     st.title("⚙️ Settings")
     st.subheader("CaptAI\u2122 is powered by two core models: **Almirax** and **Alekxia**.")
-    model_choice = st.selectbox("Choose a Model", list(models.keys()))
+    model_choice = st.selectbox("Chose a Model", list(models.keys()))
     threshold = st.slider("Prediction Threshold", 0.0, 1.0, 0.5, 0.01)
     st.caption("Adjust model and confidence threshold.")
-
+    
     st.divider()
 
     # Model Info
