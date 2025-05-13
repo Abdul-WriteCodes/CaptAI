@@ -41,18 +41,15 @@ st.markdown(
 )
 
 
-# Optimised performance: Caching of models and vectorizer to avoid reloading on every app rerun
-@st.cache_resource
-def load_models_and_vectorizer():
-    almirax_model = joblib.load('Alm_model.pkl')
-    alekxia_model = joblib.load('Alx_model.pkl')
-    vectorizer = joblib.load('text_vectorizer.pkl')
-    return {
-        'Almirax': almirax_model,
-        'Alekxia': alekxia_model
-    }, vectorizer
+# Load models and vectorizer
+almirax_model = joblib.load('sentiLGR_model.pkl')
+alekxia = joblib.load('sentiSGD_model.pkl')
+vectorizer = joblib.load('tfidf_vectorizer.pkl')
 
-models, vectorizer = load_models_and_vectorizer()
+models = {
+    'Almirax': almirax_model,
+    'Alekxia': alekxia
+}
 
 
 # Sidebar
