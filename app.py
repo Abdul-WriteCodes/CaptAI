@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+from utils.utils import clean_text
 
 import uuid
 import requests
@@ -84,12 +85,6 @@ with st.sidebar:
         Alekxia is perfect for users who need quick, responsive insights without sacrificing context or nuance
         """)
 
-# Text Cleaning
-def clean_text(text):
-    text = str(text).lower()
-    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
 
 # Initialize session state to track analysis status
 if "analysis_done" not in st.session_state:
