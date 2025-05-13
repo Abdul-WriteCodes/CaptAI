@@ -47,7 +47,12 @@ def load_models_and_vectorizer():
     almirax_model = joblib.load('sentiLGR_model.pkl')
     alekxia_model = joblib.load('sentiSGD_model.pkl')
     vectorizer = joblib.load('tfidf_vectorizer.pkl')
-    return almirax_model, alekxia_model, vectorizer
+    return {
+        'Almirax': almirax_model,
+        'Alekxia': alekxia_model
+    }, vectorizer  # Just this — a tuple of (models_dict, vectorizer)
+
+
 
 
 # Sidebar
