@@ -1,8 +1,16 @@
-streamlit
-scikit-learn
-joblib
-numpy
-pandas
-matplotlib
-wordcloud
-requests
+
+# Core ML and Data Packages
+scikit-learn==1.4.2
+pandas==2.2.2
+numpy==1.26.4
+joblib==1.4.2
+
+# Visualization
+matplotlib==3.8.4
+wordcloud==1.9.3
+seaborn==0.12.2
+
+# Web App Framework
+streamlit==1.34.0
+requests==2.31.0
+

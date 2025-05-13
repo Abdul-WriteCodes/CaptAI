@@ -4,15 +4,12 @@ Created on Thu May  1 01:36:28 2025
 @author: AWC Labs
 """
 
-import re
 import streamlit as st
-from sklearn.linear_model import LogisticRegression, SGDClassifier
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
-
+import joblib
 import uuid
 import requests
 
@@ -41,25 +38,13 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-def text_cleaning(text):
-    text = str(text).lower()
-    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
-
-
-import joblib
-
-# Load models and vectorizer
-vectorizer = joblib.load('text_vectorizer.pkl')
-almirax_model = joblib.load('Alm_model.pkl')
-alekxia = joblib.load('Alx_model.pkl')
-
+# Load pre-trained pipelines
+almirax_model = joblib.load('almirax_pipeline.pkl')
+alekxia_model = joblib.load('alekxia_pipeline.pkl')
 models = {
     'Almirax': almirax_model,
-    'Alekxia': alekxia
+    'Alekxia': alekxia_model
 }
-
 
 # Sidebar
 with st.sidebar:
@@ -73,32 +58,30 @@ with st.sidebar:
 
     # Model Info
     st.subheader("ℹ️ Model Details")
-
     if model_choice == 'Almirax':
         st.markdown("""
-        - **Selected Model:** Almirax🧱
+        - **Selected Model:** Almirax🧱  
         - Almirax delivers clear, balanced, and trustworthy sentiment analysis.
         Built on proven logic, she offers interpretable insights for feedback, reviews, 
         and conversations. Almirax is ideal for users who value transparency and control, 
-        as she brings calm precision to understanding language in regulated, high-trust environments
+        as she brings calm precision to understanding language in regulated, high-trust environments.
         """)
         
     elif model_choice == 'Alekxia':
         st.markdown("""
-        - **Selected Model:** Alekxia⚡
+        - **Selected Model:** Alekxia⚡  
         - Alekxia delivers fast, adaptive sentiment analysis at scale. 
         Designed for real-time environments like social media and live chat, she captures emotional shifts
         and trends instantly. Powered by a rapid-learning engine, 
-        Alekxia is perfect for users who need quick, responsive insights without sacrificing context or nuance
+        Alekxia is perfect for users who need quick, responsive insights without sacrificing context or nuance.
         """)
 
-
-# Initialize session state to track analysis status
+# Initialize session state
 if "analysis_done" not in st.session_state:
     st.session_state.analysis_done = False
 
 # Input Section
-st.subheader("📝 Analyze Sentiment from  Text Review")
+st.subheader("📝 Analyze Sentiment from Text Review")
 user_input = st.text_area(
     "📌 Please enter a review (e.g., movie opinion, product feedback):",
     placeholder="Type or paste text review here...",
@@ -111,17 +94,14 @@ if user_input.strip().isnumeric():
 elif st.button(f"🧠 Analyze Sentiment with {model_choice}"):
     if user_input.strip():
         with st.spinner("Analyzing..."):
-            cleaned_input = clean_text(user_input)
             model = models[model_choice]
-            input_vector = vectorizer.transform([cleaned_input])
-
-            proba = model.predict_proba(input_vector)[0] if hasattr(model, "predict_proba") else None
-            if proba is not None:
+            try:
+                proba = model.predict_proba([user_input])[0]
                 positive_proba = proba[1]
-                prediction = 1 if positive_proba >= threshold else 0
-                confidence = np.max(proba)
-            else:
-                prediction = model.predict(input_vector)[0]
+                prediction = int(positive_proba >= threshold)
+                confidence = positive_proba if prediction == 1 else 1 - positive_proba
+            except AttributeError:
+                prediction = model.predict([user_input])[0]
                 confidence = 1.0
 
         st.subheader("📈📉 Result")
@@ -134,36 +114,39 @@ elif st.button(f"🧠 Analyze Sentiment with {model_choice}"):
 
         st.metric(f"Hi, I am {model_choice}, my confidence about this {review_type} Review is:", f"{confidence*100:.1f}%")
 
-        # Mark analysis as done and log details
         st.session_state.analysis_done = True
         st.session_state.user_log = f"Used model {model_choice}, prediction: {review_type}, confidence: {confidence:.2f}, input: {user_input[:100]}"
 
-        # Feature Impact
-        feature_names = vectorizer.get_feature_names_out()
-        input_array = input_vector.toarray()[0]
-        coef = model.coef_[0]
-        word_contributions = input_array * coef
-        top_indices = np.argsort(np.abs(word_contributions))[-5:][::-1]
+        # Feature Impact (only works if model has coef_ and TfidfVectorizer)
+        try:
+            vectorizer = model.named_steps['vectorizer']
+            feature_names = vectorizer.get_feature_names_out()
+            input_vector = model.named_steps['vectorizer'].transform([user_input])
+            coef = model.named_steps['classifier'].coef_[0]
+            input_array = input_vector.toarray()[0]
+            word_contributions = input_array * coef
+            top_indices = np.argsort(np.abs(word_contributions))[-5:][::-1]
 
-        words_data = []
-        for idx in top_indices:
-            if input_array[idx] > 0:
-                word = feature_names[idx]
-                score = word_contributions[idx]
-                impact = "✅Positive" if score > 0 else "❌Negative"
-                words_data.append({
-                    "Word": word,
-                    "Impact": impact,
-                    "Score": round(score, 4)
-                })
+            words_data = []
+            for idx in top_indices:
+                if input_array[idx] > 0:
+                    word = feature_names[idx]
+                    score = word_contributions[idx]
+                    impact = "✅Positive" if score > 0 else "❌Negative"
+                    words_data.append({
+                        "Word": word,
+                        "Impact": impact,
+                        "Score": round(score, 4)
+                    })
 
-        if words_data:
-            st.markdown("Here are the key words in text review that shaped the sentiment result:")
-            st.table(pd.DataFrame(words_data))
-        else:
-            st.info("No strong influential words found in the input.")
+            if words_data:
+                st.markdown("Here are the key words in text review that shaped the sentiment result:")
+                st.table(pd.DataFrame(words_data))
+            else:
+                st.info("No strong influential words found in the input.")
+        except Exception as e:
+            st.info("This model does not support feature-level interpretability.")
 
-      
         st.divider()
 
         # Word Cloud
@@ -178,7 +161,7 @@ elif st.button(f"🧠 Analyze Sentiment with {model_choice}"):
     else:
         st.warning("⚠️ Please enter a review to analyze.")
 
-# --- Collect Feedback only if analysis was done ---
+# Feedback Section
 if st.session_state.analysis_done:
     st.subheader("User Feedback✍️")
     user_feedback = st.text_area("User feedbacks are appreciated, please share  any comments about my usefulness, performance, or suggestions for improvement", height=100)
@@ -209,6 +192,4 @@ st.markdown("""
     The feedback that is voluntarily given by users and collected by us is only used to improve the system.<br>
     © 2025 AWC Labs. All rights reserved.
 </div>
-
-
 """, unsafe_allow_html=True)
