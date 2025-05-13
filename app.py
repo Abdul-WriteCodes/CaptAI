@@ -41,17 +41,25 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+def text_cleaning(text):
+    text = str(text).lower()
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
 import joblib
 
 # Load models and vectorizer
+vectorizer = joblib.load('text_vectorizer.pkl')
 almirax_model = joblib.load('Alm_model.pkl')
 alekxia = joblib.load('Alx_model.pkl')
-vectorizer = joblib.load('text_vectorizer.pkl')
+
 models = {
     'Almirax': almirax_model,
     'Alekxia': alekxia
 }
-from utils.utils import clean_text
+
 
 # Sidebar
 with st.sidebar:
