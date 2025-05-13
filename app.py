@@ -6,6 +6,7 @@ Created on Thu May  1 01:36:28 2025
 
 import re
 import streamlit as st
+from sklearn.linear_model import LogisticRegression, SGDClassifier
 import joblib
 import numpy as np
 import pandas as pd
