@@ -44,8 +44,8 @@ st.markdown(
 
 
 # Load models and vectorizer
-almirax_model = joblib.load('Alx_model.pkl')
-alekxia = joblib.load('Alm_model.pkl')
+almirax_model = joblib.load('Alm_model.pkl')
+alekxia = joblib.load('Alx_model.pkl')
 vectorizer = joblib.load('text_vectorizer.pkl')
 
 models = {
