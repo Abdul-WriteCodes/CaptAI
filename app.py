@@ -137,13 +137,20 @@ if analyze_button and user_input.strip():
     except Exception:
         st.info("This model does not support feature-level interpretability.")
 
-    st.divider()
-    st.subheader("🎨 Key Word Map")
-    wc = WordCloud(width=400, height=200, background_color='white').generate(user_input)
+  @st.cache_data
+def generate_wordcloud(text):
+    wc = WordCloud(width=400, height=200, background_color='white').generate(text)
     fig, ax = plt.subplots(figsize=(5, 2.5))
     ax.imshow(wc, interpolation='bilinear')
     ax.axis('off')
-    st.pyplot(fig)
+    return fig
+
+# Usage in main app flow
+st.divider()
+st.subheader("🎨 Key Word Map")
+fig = generate_wordcloud(user_input)
+st.pyplot(fig)
+
 
 if st.session_state.analysis_done:
     st.subheader("User Feedback✍️")
