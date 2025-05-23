@@ -38,13 +38,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Load pre-trained pipelines
-almirax_model = joblib.load('almirax_pipeline.pkl')
-alekxia_model = joblib.load('alekxia_pipeline.pkl')
-models = {
-    'Almirax': almirax_model,
-    'Alekxia': alekxia_model
-}
+@st.cache_resource
+def load_models():
+    almirax_model = joblib.load('almirax_pipeline.pkl')
+    alekxia_model = joblib.load('alekxia_pipeline.pkl')
+    return {
+        'Almirax': almirax_model,
+        'Alekxia': alekxia_model
+    }
+
+models = load_models()
+
 
 # Sidebar
 with st.sidebar:
