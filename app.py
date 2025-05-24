@@ -55,39 +55,56 @@ def load_models():
 models = load_models()
 
 with st.sidebar:
-    dark_mode = st.checkbox("🌙 Dark Mode", value=False)
+    blue_mode = st.checkbox("🔵 Blue Mode", value=False)
 
-def set_theme(dark_mode: bool):
-    if dark_mode:
+
+def set_theme(blue_mode: bool):
+    if blue_mode:
         st.markdown("""
         <style>
+        /* App background and text */
         .stApp {
-            background-color: #0e1117;
-            color: white;
+            background-color: #001f3f;  /* Navy blue */
+            color: #e0f0ff;             /* Light blue text */
         }
+        /* Headers */
         h1, h2, h3, h4, h5, h6 {
-            color: white;
+            color: #a3c1ff;             /* Soft blue */
         }
+        /* Text area, inputs */
         textarea, input, select {
-            background-color: #22252a !important;
-            color: white !important;
+            background-color: #003366 !important;  /* Dark blue input */
+            color: #d0e6ff !important;
+            border: 1px solid #4a90e2 !important;
         }
+        /* Buttons */
         button {
-            background-color: #444 !important;
-            color: white !important;
+            background-color: #004080 !important; /* Medium blue */
+            color: #e0f0ff !important;
+            border: 1px solid #3399ff !important;
         }
+        button:hover {
+            background-color: #3399ff !important; /* Hover lighter blue */
+            color: #001f3f !important;
+        }
+        /* Sidebar background */
         [data-testid="stSidebar"] {
-            background-color: #111518;
-            color: white;
+            background-color: #00264d;
+            color: #cce6ff;
         }
+        /* Dividers */
         .stDivider {
-            border-color: #444 !important;
+            border-color: #4a90e2 !important;
+        }
+        a {
+            color: #80b3ff !important;
         }
         </style>
         """, unsafe_allow_html=True)
     else:
         st.markdown("""
         <style>
+        /* Default light mode */
         .stApp {
             background-color: white;
             color: black;
@@ -99,7 +116,8 @@ def set_theme(dark_mode: bool):
         </style>
         """, unsafe_allow_html=True)
 
-set_theme(dark_mode)
+
+set_theme(blue_mode)
 
 # Sidebar
 with st.sidebar:
