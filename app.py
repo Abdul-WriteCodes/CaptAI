@@ -154,12 +154,17 @@ elif st.button(f"🧠 Analyze Sentiment with {model_choice}"):
         st.divider()
 
         # Word Cloud
+        @st.cache_data
+        def generate_wordcloud(text):
+            wc = WordCloud(width=400, height=200, background_color='white').generate(text)
+            fig, ax = plt.subplots(figsize=(5, 2.5))
+            ax.imshow(wc, interpolation='bilinear')
+            ax.axis('off')
+            return fig
+
         st.subheader("🎨 Key Word Map")
         st.markdown(f"Here is the visual representation of the most prominent words in the text I analyzed to be **{review_type}**:")
-        wc = WordCloud(width=400, height=200, background_color='white').generate(user_input)
-        fig, ax = plt.subplots(figsize=(5, 2.5))
-        ax.imshow(wc, interpolation='bilinear')
-        ax.axis('off')
+        fig = generate_wordcloud(user_input)
         st.pyplot(fig)
         st.markdown("👩‍🔬I hope you find all of these information to be helpful ")
     else:
