@@ -25,7 +25,7 @@ ENTRY_LOG = "entry.588008680"
 ENTRY_FEEDBACK = "entry.2051031519"
 
 # Page Setup
-st.set_page_config(page_title="🤖CaptAI", layout="centered")
+st.set_page_config(page_title="🎭CaptAI", layout="centered")
 st.markdown(
     """
     <div style='text-align: center;'>
