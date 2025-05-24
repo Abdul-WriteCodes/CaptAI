@@ -167,20 +167,20 @@ elif st.button(f"🧠 Analyze Sentiment with {model_choice}"):
 
 # Feedback Section
 if st.session_state.analysis_done:
-    st.subheader("User Feedback✍️")
-    user_feedback = st.text_area("User feedbacks are appreciated, please share  any comments about my usefulness, performance, or suggestions for improvement", height=100)
-    if st.button(f"📩 Submit Feedback: {model_choice}"):
-        form_data = {
-            ENTRY_SESSION: session_id,
-            ENTRY_LOG: st.session_state.user_log,
-            ENTRY_FEEDBACK: user_feedback
-        }
-
-        response = requests.post(form_url, data=form_data)
-        if response.status_code == 200:
-            st.success("Feedback submitted! ✅")
-        else:
-            st.warning("Failed to submit feedback. 🚫")
+    with st.expander("✍️ Submit Feedback (optional)"):
+        user_feedback = st.text_area("We'd love your thoughts! How useful was this? Any suggestions?", height=100)
+        submit_feedback = st.button("📩 Submit Feedback")
+        if submit_feedback and user_feedback.strip():
+            form_data = {
+                ENTRY_SESSION: session_id,
+                ENTRY_LOG: st.session_state.user_log,
+                ENTRY_FEEDBACK: user_feedback
+            }
+            response = requests.post(form_url, data=form_data)
+            if response.status_code == 200:
+                st.success("Feedback submitted! ✅")
+            else:
+                st.warning("Failed to submit feedback. 🚫")
 
 # Footer
 st.markdown("---")
