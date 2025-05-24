@@ -176,9 +176,9 @@ elif st.button(f"🧠 Analyze Sentiment with {model_choice}"):
 
 # Feedback Section
 if st.session_state.analysis_done:
-    with st.expander("✍️ Submit Feedback (optional)"):
-        user_feedback = st.text_area("We'd love your thoughts! How useful was this? Any suggestions?", height=100)
-        submit_feedback = st.button("📩 Submit Feedback")
+    with st.expander("✍️ Submit Feedback"):
+        user_feedback = st.text_area("Please share any comments about usefulness or suggestions for improvement", height=100)
+        submit_feedback = st.button(f"📩 Submit Feedback for: {model_choice}")
         if submit_feedback and user_feedback.strip():
             form_data = {
                 ENTRY_SESSION: session_id,
