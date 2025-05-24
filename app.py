@@ -14,37 +14,7 @@ import uuid
 import requests
 
 
-if "dark_mode" not in st.session_state:
-    st.session_state.dark_mode = False
 
-dark_mode = st.sidebar.checkbox("🌙 Dark Mode", value=st.session_state.dark_mode)
-st.session_state.dark_mode = dark_mode
-
-# Define CSS for light and dark modes (customize as needed)
-light_css = """
-<style>
-    body { background-color: white; color: black; }
-    .css-1d391kg { background-color: white; }
-</style>
-"""
-
-dark_css = """
-<style>
-    body { background-color: #0e1117; color: #fafafa; }
-    .css-1d391kg { background-color: #0e1117; }
-    /* Style sidebar background */
-    .css-1d391kg div[data-testid="stSidebar"] {
-        background-color: #121417;
-        color: #fafafa;
-    }
-    /* You can add more CSS selectors for buttons, inputs, etc. */
-</style>
-"""
-
-if dark_mode:
-    st.markdown(dark_css, unsafe_allow_html=True)
-else:
-    st.markdown(light_css, unsafe_allow_html=True)
 
 # Generate a unique session ID for the user
 session_id = str(uuid.uuid4())
@@ -71,6 +41,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
+
 @st.cache_resource
 def load_models():
     almirax_model = joblib.load('almirax_pipeline.pkl')
@@ -82,6 +54,52 @@ def load_models():
 
 models = load_models()
 
+with st.sidebar:
+    dark_mode = st.checkbox("🌙 Dark Mode", value=False)
+
+def set_theme(dark_mode: bool):
+    if dark_mode:
+        st.markdown("""
+        <style>
+        .stApp {
+            background-color: #0e1117;
+            color: white;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: white;
+        }
+        textarea, input, select {
+            background-color: #22252a !important;
+            color: white !important;
+        }
+        button {
+            background-color: #444 !important;
+            color: white !important;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #111518;
+            color: white;
+        }
+        .stDivider {
+            border-color: #444 !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <style>
+        .stApp {
+            background-color: white;
+            color: black;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #f0f2f6;
+            color: black;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+set_theme(dark_mode)
 
 # Sidebar
 with st.sidebar:
