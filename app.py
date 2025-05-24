@@ -42,7 +42,6 @@ st.markdown(
 )
 
 
-
 @st.cache_resource
 def load_models():
     almirax_model = joblib.load('almirax_pipeline.pkl')
@@ -54,70 +53,6 @@ def load_models():
 
 models = load_models()
 
-with st.sidebar:
-    blue_mode = st.checkbox("🔵 Blue Mode", value=False)
-
-
-def set_theme(blue_mode: bool):
-    if blue_mode:
-        st.markdown("""
-        <style>
-        /* App background and text */
-        .stApp {
-            background-color: #001f3f;  /* Navy blue */
-            color: #e0f0ff;             /* Light blue text */
-        }
-        /* Headers */
-        h1, h2, h3, h4, h5, h6 {
-            color: #a3c1ff;             /* Soft blue */
-        }
-        /* Text area, inputs */
-        textarea, input, select {
-            background-color: #003366 !important;  /* Dark blue input */
-            color: #d0e6ff !important;
-            border: 1px solid #4a90e2 !important;
-        }
-        /* Buttons */
-        button {
-            background-color: #004080 !important; /* Medium blue */
-            color: #e0f0ff !important;
-            border: 1px solid #3399ff !important;
-        }
-        button:hover {
-            background-color: #3399ff !important; /* Hover lighter blue */
-            color: #001f3f !important;
-        }
-        /* Sidebar background */
-        [data-testid="stSidebar"] {
-            background-color: #00264d;
-            color: #cce6ff;
-        }
-        /* Dividers */
-        .stDivider {
-            border-color: #4a90e2 !important;
-        }
-        a {
-            color: #80b3ff !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <style>
-        /* Default light mode */
-        .stApp {
-            background-color: white;
-            color: black;
-        }
-        [data-testid="stSidebar"] {
-            background-color: #f0f2f6;
-            color: black;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-
-set_theme(blue_mode)
 
 # Sidebar
 with st.sidebar:
