@@ -13,7 +13,7 @@ import joblib
 import uuid
 import requests
 
-# Caching session ID
+# Session ID caching
 def get_session_id():
     if "session_id" not in st.session_state:
         st.session_state.session_id = str(uuid.uuid4())
@@ -52,7 +52,7 @@ st.markdown("""
 with st.sidebar:
     st.title("⚙️ Settings")
     st.subheader("CaptAI™ is powered by two core models: **Almirax** and **Alekxia**.")
-    model_choice = st.selectbox("Chose a Model", list(models.keys()))
+    model_choice = st.selectbox("Choose a Model", list(models.keys()))
     threshold = st.slider("Prediction Threshold", 0.0, 1.0, 0.5, 0.01)
     st.caption("Adjust model and confidence threshold.")
     st.divider()
@@ -62,21 +62,20 @@ with st.sidebar:
         - **Selected Model:** Almirax🧱  
         - Almirax delivers clear, balanced, and trustworthy sentiment analysis.
         Built on proven logic, she offers interpretable insights for feedback, reviews, 
-        and conversations. Almirax is ideal for users who value transparency and control, 
-        as she brings calm precision to understanding language in regulated, high-trust environments.
+        and conversations. Ideal for high-trust environments.
         """)
     elif model_choice == 'Alekxia':
         st.markdown("""
         - **Selected Model:** Alekxia⚡  
         - Alekxia delivers fast, adaptive sentiment analysis at scale. 
-        Designed for real-time environments like social media and live chat, she captures emotional shifts
-        and trends instantly. Powered by a rapid-learning engine, 
-        Alekxia is perfect for users who need quick, responsive insights without sacrificing context or nuance.
+        Perfect for real-time environments like social media and live chat.
         """)
 
+# Initialize state
 if "analysis_done" not in st.session_state:
     st.session_state.analysis_done = False
 
+# Main interface
 st.subheader("📝 Analyze Sentiment from Text Review")
 user_input = st.text_area(
     "📌 Please enter a review (e.g., movie opinion, product feedback):",
@@ -112,6 +111,7 @@ if analyze_button and user_input.strip():
     st.session_state.analysis_done = True
     st.session_state.user_log = f"Used model {model_choice}, prediction: {review_type}, confidence: {confidence:.2f}, input: {user_input[:100]}"
 
+    # Interpretability
     try:
         vectorizer = model.named_steps['vectorizer']
         feature_names = vectorizer.get_feature_names_out()
@@ -137,7 +137,8 @@ if analyze_button and user_input.strip():
     except Exception:
         st.info("This model does not support feature-level interpretability.")
 
-  @st.cache_data
+# WordCloud
+@st.cache_data
 def generate_wordcloud(text):
     wc = WordCloud(width=400, height=200, background_color='white').generate(text)
     fig, ax = plt.subplots(figsize=(5, 2.5))
@@ -145,29 +146,29 @@ def generate_wordcloud(text):
     ax.axis('off')
     return fig
 
-# Usage in main app flow
 st.divider()
 st.subheader("🎨 Key Word Map")
 fig = generate_wordcloud(user_input)
 st.pyplot(fig)
 
-
+# Feedback section (collapsible)
 if st.session_state.analysis_done:
-    st.subheader("User Feedback✍️")
-    user_feedback = st.text_area("Please share any comments about usefulness or suggestions:", height=100)
-    submit_feedback = st.button("📩 Submit Feedback")
-    if submit_feedback and user_feedback.strip():
-        form_data = {
-            ENTRY_SESSION: session_id,
-            ENTRY_LOG: st.session_state.user_log,
-            ENTRY_FEEDBACK: user_feedback
-        }
-        response = requests.post(form_url, data=form_data)
-        if response.status_code == 200:
-            st.success("Feedback submitted! ✅")
-        else:
-            st.warning("Failed to submit feedback. 🚫")
+    with st.expander("✍️ Submit Feedback (optional)"):
+        user_feedback = st.text_area("We'd love your thoughts! How useful was this? Any suggestions?", height=100)
+        submit_feedback = st.button("📩 Submit Feedback")
+        if submit_feedback and user_feedback.strip():
+            form_data = {
+                ENTRY_SESSION: session_id,
+                ENTRY_LOG: st.session_state.user_log,
+                ENTRY_FEEDBACK: user_feedback
+            }
+            response = requests.post(form_url, data=form_data)
+            if response.status_code == 200:
+                st.success("Feedback submitted! ✅")
+            else:
+                st.warning("Failed to submit feedback. 🚫")
 
+# Footer
 st.markdown("---")
 st.markdown("""
    <div style="text-align: center; font-size: 0.85em; color: gray; line-height: 1.6em;">
