@@ -1,0 +1,17 @@
+
+# Core ML and Data Packages
+scikit-learn
+pandas
+numpy
+joblib
+
+# Visualization
+matplotlib
+wordcloud
+
+# Web App Framework
+streamlit
+requests
+requests-mock
+pytest
+
