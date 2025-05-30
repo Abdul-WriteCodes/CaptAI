@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="assets/captai-logo.png" alt="CaptAI Logo" width="200"/>
+	<img src="assets/captai-logo.png" alt="CaptAI Logo" style="width:100%; max-width:800px; "/>
 </p>
 
 #CaptAI™ 
