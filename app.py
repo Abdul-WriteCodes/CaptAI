@@ -196,13 +196,13 @@ st.markdown("---")
 st.markdown("""
    <div style="text-align: center; font-size: 0.85em; color: gray; line-height: 1.6em;">
     <strong>CaptAI™</strong>: Designed and Developed at <strong>AWC Labs</strong><br>
-    🔬Learn About Us: <a href="https://abdul-writecodes.github.io/AWC-Labs" target="_blank">AWC Labs</a><br>
+    🔬Learn More: <a href="https://abdul-writecodes.github.io/abprt/index.html" target="_blank">Abdul</a><br>
     We appreciate voluntary support for this project via 
     <a href="https://www.buymeacoffee.com/abdul_writecodes" target="_blank" style="color: #ff5f1f; font-weight: bold;">☕BuyMeACoffee</a> 
     or 
     <a href="https://www.selar.com/showlove/awc-labs" target="_blank" style="color: #ff5f1f; font-weight: bold;">💖Selar</a><br>
-    <strong>Disclaimer:</strong> Our platform does not collect or store personal data and information. 
+    <strong>Disclaimer:</strong> This system does not collect or store personal data and information. 
     The feedback that is voluntarily given by users and collected by us is only used to improve the system.<br>
-    © 2025 AWC Labs. All rights reserved.
+    © 2025 Abdul Write & Codes. All rights reserved.
 </div>
 """, unsafe_allow_html=True)
