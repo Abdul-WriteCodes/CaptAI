@@ -74,7 +74,7 @@ The system provides:
 
 ---
 
-## 👤 Author
+## 👤 Developer
 
-**Abdul-Azeez Olohunjuwon**  
+**Anafi Abdul-Azeez Olohunjuwon**  
 AI/ML & LLM Developer | Research Writer
