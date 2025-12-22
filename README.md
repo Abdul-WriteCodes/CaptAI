@@ -58,7 +58,7 @@ The system provides:
 
 ---
 
-## 🔗 Live Demo
+## 🔗 Live System
 
 👉 **[Try the Live App Here](https://captai.streamlit.app/)**
 
