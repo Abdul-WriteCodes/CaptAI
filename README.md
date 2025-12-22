@@ -5,6 +5,10 @@ It enables users to automatically analyze audience sentiment in movie reviews, c
 
 ---
 
+<p align="center">
+  <img src="assets/captai-logo.png" alt="CaptAI Logo" style="width:100%; max-width:800px;" />
+</p>
+---
 ## 🚀 Key Features
 
 - Dual sentiment analysis models:
@@ -51,12 +55,6 @@ The system provides:
 - **Confidence Score:** Model certainty for the prediction
 - **Keyword Summary:** Words influencing the decision
 - **Word Cloud:** Visual representation of prominent terms
-
----
-
-<p align="center">
-  <img src="assets/captai-logo.png" alt="CaptAI Logo" style="width:100%; max-width:800px;" />
-</p>
 
 ---
 
