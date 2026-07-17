@@ -196,7 +196,7 @@ st.markdown("---")
 st.markdown("""
    <div style="text-align: center; font-size: 0.85em; color: gray; line-height: 1.6em;">
     <strong>CaptAI™</strong>: Designed and Developed at <strong>AWC Labs</strong><br>
-    🔬Learn more about Developer: <a href="https://abdul-writecodes.github.io/portfolio/" target="_blank">Abdul</a><br>
+    🔬Learn more about Developer: <a href="https://abdul-writecodes/" target="_blank">Abdul</a><br>
     We appreciate voluntary support for this project via 
     <a href="https://www.buymeacoffee.com/abdul_writecodes" target="_blank" style="color: #ff5f1f; font-weight: bold;">☕BuyMeACoffee</a> 
     or 
